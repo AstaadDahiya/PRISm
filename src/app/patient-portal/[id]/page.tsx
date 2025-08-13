@@ -90,16 +90,17 @@ const PatientPortalSkeleton = () => (
             </div>
         </main>
     </div>
-)
+);
 
 
 export default function PatientPortalPage({ params }: { params: { id: string }}) {
   const [patientData, setPatientData] = useState<{ patient: Patient; tasks: Task[]; healthData: HealthData; } | null>(null);
-  
+  const { id } = params;
+
   useEffect(() => {
-    const data = getPatientData(params.id);
+    const data = getPatientData(id);
     if (data) {
-        const latestHealthData = data.healthData[data.healthData.length - 1] || { steps: 0, sleep: 0, heartRate: 0 };
+        const latestHealthData = data.healthData.length > 0 ? data.healthData[data.healthData.length - 1] : { date: '', steps: 0, sleep: 0, heartRate: 0 };
         setPatientData({
             patient: data.patient,
             tasks: data.tasks,
@@ -108,7 +109,7 @@ export default function PatientPortalPage({ params }: { params: { id: string }})
     } else {
         notFound();
     }
-  }, [params.id]);
+  }, [id]);
 
 
   if (!patientData) {
@@ -180,4 +181,3 @@ export default function PatientPortalPage({ params }: { params: { id: string }})
     </div>
   );
 }
-
