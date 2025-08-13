@@ -1,3 +1,5 @@
+import { Timestamp } from "firebase/firestore";
+
 export type Patient = {
   id: string;
   name: string;
@@ -22,7 +24,7 @@ export type Message = {
   patientId: string;
   sender: 'Clinician' | 'Patient';
   text: string;
-  timestamp: string;
+  timestamp: string | Timestamp;
 };
 
 export type HealthData = {
@@ -43,6 +45,11 @@ export type Intervention = {
   description: string;
   category: 'Medication' | 'Lifestyle' | 'Appointment';
 };
+
+export type RiskFactors = {
+    name: string;
+    value: number;
+}
 
 export const patients: Patient[] = [
   {
@@ -146,7 +153,7 @@ export const interventions: Intervention[] = [
     { id: 'i4', title: 'Remote Heart Rate Monitoring', description: 'Set up daily remote monitoring for heart rate fluctuations.', category: 'Lifestyle' },
 ];
 
-export const riskFactors = {
+export const riskFactors: { [key: string]: RiskFactors[] } = {
     '1': [
         { name: 'Age', value: 30 },
         { name: 'Previous Conditions', value: 40 },

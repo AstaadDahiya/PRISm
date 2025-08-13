@@ -67,6 +67,7 @@ import AiTaskExtractor from "./_components/ai-task-extractor";
 import AiRiskAnalyzer from "./_components/ai-risk-analyzer";
 import AiPatientSummarizer from "./_components/ai-patient-summarizer";
 import AiInterventionSuggester from "./_components/ai-intervention-suggester";
+import SecureMessaging from "./_components/secure-messaging";
 
 type ChartProps = {
   data: any[];
@@ -278,42 +279,9 @@ export default function PatientDetailPage({
               </div>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>Secure Messaging</CardTitle>
-            </CardHeader>
-            <CardContent className="flex flex-col h-[300px]">
-              <div className="flex-grow space-y-4 overflow-y-auto pr-2">
-                {messages.map((message) => (
-                  <div key={message.id} className={`flex items-end gap-2 ${message.sender === 'Patient' ? 'justify-start' : 'justify-end'}`}>
-                    {message.sender === 'Patient' && <Avatar className="h-8 w-8"><AvatarFallback>{patient.name.charAt(0)}</AvatarFallback></Avatar>}
-                    <div className={`rounded-lg px-3 py-2 max-w-xs ${message.sender === 'Patient' ? 'bg-muted' : 'bg-primary text-primary-foreground'}`}>
-                      <p className="text-sm">{message.text}</p>
-                       <p className={`text-xs mt-1 ${message.sender === 'Patient' ? 'text-muted-foreground' : 'text-primary-foreground/70'}`}>{message.timestamp}</p>
-                    </div>
-                     {message.sender === 'Clinician' && <Avatar className="h-8 w-8"><AvatarFallback>C</AvatarFallback></Avatar>}
-                  </div>
-                ))}
-              </div>
-               <div className="mt-4 flex gap-2">
-                <Input placeholder="Type your message..." />
-                <Button><Send className="h-4 w-4" /></Button>
-              </div>
-            </CardContent>
-          </Card>
+          <SecureMessaging patient={patient} sender="Clinician" />
         </div>
       </div>
     </div>
   );
 }
-
-const Avatar = ({ className, children }: { className?: string, children: React.ReactNode }) => (
-    <div className={cn("flex items-center justify-center rounded-full bg-muted text-muted-foreground", className)}>
-        {children}
-    </div>
-)
-
-const AvatarFallback = ({ children }: { children: React.ReactNode }) => (
-    <span className="font-semibold">{children}</span>
-)
-const cn = (...args: any[]) => args.filter(Boolean).join(" ");

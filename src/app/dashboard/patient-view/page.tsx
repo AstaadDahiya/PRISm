@@ -15,6 +15,8 @@ import { Activity, BedDouble, HeartPulse, Send, MessageSquare } from "lucide-rea
 import Logo from "@/components/logo";
 import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
+import SecureMessaging from "../patient/[id]/_components/secure-messaging";
+
 
 // Let's assume we're viewing patient '1' for this portal
 const PATIENT_ID_FOR_VIEW = '1';
@@ -93,44 +95,12 @@ export default function PatientViewPage() {
                  <HealthMetricCard icon={BedDouble} label="Last Night's Sleep" value={latestHealthData.sleep} unit="hours" />
               </CardContent>
             </Card>
+            
+            <SecureMessaging patient={patient} sender="Patient" />
 
-            <Card className="shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl font-headline flex items-center gap-2"><MessageSquare className="w-6 h-6" /> Secure Messages</CardTitle>
-                <CardDescription>Communicate securely with your care team.</CardDescription>
-              </CardHeader>
-              <CardContent className="flex flex-col h-[400px]">
-                <div className="flex-grow space-y-4 overflow-y-auto pr-2 bg-background p-4 rounded-lg">
-                  {messages.map((message) => (
-                    <div key={message.id} className={`flex items-end gap-2 ${message.sender === 'Patient' ? 'justify-end' : 'justify-start'}`}>
-                      {message.sender === 'Clinician' && <Avatar className="h-8 w-8"><AvatarFallback>C</AvatarFallback></Avatar>}
-                      <div className={`rounded-lg px-4 py-3 max-w-sm shadow-md ${message.sender === 'Clinician' ? 'bg-card' : 'bg-primary text-primary-foreground'}`}>
-                        <p className="text-base">{message.text}</p>
-                        <p className={`text-xs mt-1 text-right ${message.sender === 'Clinician' ? 'text-muted-foreground' : 'text-primary-foreground/70'}`}>{message.timestamp}</p>
-                      </div>
-                      {message.sender === 'Patient' && <Avatar className="h-8 w-8"><AvatarFallback>You</AvatarFallback></Avatar>}
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <Input placeholder="Type your message..." className="text-base h-12" />
-                  <Button size="lg"><Send className="h-5 w-5" /></Button>
-                </div>
-              </CardContent>
-            </Card>
           </div>
         </div>
       </main>
     </div>
   );
 }
-
-const Avatar = ({ className, children }: { className?: string, children: React.ReactNode }) => (
-    <div className={`flex items-center justify-center rounded-full bg-muted text-muted-foreground ${className}`}>
-        {children}
-    </div>
-)
-
-const AvatarFallback = ({ children }: { children: React.ReactNode }) => (
-    <span className="font-semibold">{children}</span>
-)

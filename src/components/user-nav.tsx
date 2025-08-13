@@ -14,22 +14,29 @@ import {
 import { CreditCard, LogOut, Settings, User } from "lucide-react";
 
 export function UserNav() {
+  // In a real app, you'd get this from an auth hook
+  const user = {
+    uid: 'clinician_1_uid',
+    name: 'Dr. Alice Smith',
+    email: 'alice.smith@hospital.com',
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-9 w-9">
             <AvatarImage src="https://placehold.co/100x100.png" alt="@shadcn" data-ai-hint="doctor portrait" />
-            <AvatarFallback>AS</AvatarFallback>
+            <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Dr. Alice Smith</p>
+            <p className="text-sm font-medium leading-none">{user.name}</p>
             <p className="text-xs leading-none text-muted-foreground">
-              alice.smith@hospital.com
+              {user.email}
             </p>
           </div>
         </DropdownMenuLabel>

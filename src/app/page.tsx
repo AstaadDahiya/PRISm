@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Stethoscope, User } from "lucide-react";
+import { ArrowRight, Stethoscope, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import Logo from "@/components/logo";
@@ -17,49 +17,31 @@ export default function Home() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+       <div className="w-full max-w-sm">
+        <Card>
           <CardHeader>
-            <div className="flex items-center gap-4">
-              <div className="bg-primary/10 p-3 rounded-full">
-                <Stethoscope className="h-8 w-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl font-headline">For Clinicians</CardTitle>
-            </div>
-            <CardDescription className="pt-2">
-              Access patient dashboards, risk analyses, and AI-powered tools to streamline your workflow and provide proactive care.
+            <CardTitle className="text-2xl font-headline">Login</CardTitle>
+            <CardDescription>
+              Select your role to access the portal.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="grid gap-4">
             <Button asChild className="w-full" size="lg">
               <Link href="/dashboard">
-                Go to Clinician Dashboard <ArrowRight className="ml-2 h-5 w-5" />
+                <Stethoscope className="mr-2 h-5 w-5" />
+                Clinician Login
               </Link>
             </Button>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow duration-300">
-          <CardHeader>
-            <div className="flex items-center gap-4">
-               <div className="bg-primary/10 p-3 rounded-full">
-                <User className="h-8 w-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl font-headline">For Patients</CardTitle>
-            </div>
-            <CardDescription className="pt-2">
-              View your personalized to-do list, track your health data, and securely communicate with your care team.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
             <Button asChild className="w-full" variant="secondary" size="lg">
                <Link href="/dashboard/patient-view">
-                Go to Patient Portal <ArrowRight className="ml-2 h-5 w-5" />
+                <User className="mr-2 h-5 w-5" />
+                Patient Login
               </Link>
             </Button>
           </CardContent>
         </Card>
       </div>
+
 
        <footer className="mt-16 text-center text-muted-foreground text-sm">
           <p>&copy; {new Date().getFullYear()} PRISm. All rights reserved.</p>
