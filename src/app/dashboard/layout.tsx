@@ -26,8 +26,9 @@ import { UserNav } from "@/components/user-nav";
 import Logo from "@/components/logo";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useAuth } from "@/hooks/use-auth";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { cn } from "@/lib/utils";
 
 function DashboardSkeleton() {
     return (
@@ -57,6 +58,38 @@ function DashboardSkeleton() {
         </main>
       </div>
     </div>
+    )
+}
+
+const NavLink = ({ href, children, badgeCount }: { href: string; children: React.ReactNode, badgeCount?: number }) => {
+    const pathname = usePathname();
+    const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
+    
+    return (
+        <Link href={href} className={cn("flex items-center gap-3 rounded-lg px-3 py-2 transition-all", isActive ? "bg-muted text-primary" : "text-muted-foreground hover:text-primary")}>
+            {children}
+            {badgeCount !== undefined && (
+                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                  {badgeCount}
+                </Badge>
+            )}
+        </Link>
+    )
+}
+
+const MobileNavLink = ({ href, children, badgeCount }: { href: string; children: React.ReactNode, badgeCount?: number }) => {
+    const pathname = usePathname();
+    const isActive = pathname === href || (href !== '/dashboard' && pathname.startsWith(href));
+    
+    return (
+        <Link href={href} className={cn("mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 transition-all", isActive ? "bg-muted text-foreground" : "text-muted-foreground hover:text-foreground")}>
+            {children}
+            {badgeCount !== undefined && (
+                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
+                  {badgeCount}
+                </Badge>
+            )}
+        </Link>
     )
 }
 
@@ -91,44 +124,26 @@ export default function DashboardLayout({
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
+              <NavLink href="/dashboard">
                 <Home className="h-4 w-4" />
                 Dashboard
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
+              </NavLink>
+              <NavLink href="/dashboard/patient" badgeCount={5}>
                 <Users className="h-4 w-4" />
                 Patients
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  5
-                </Badge>
-              </Link>
-              <Link
-                href="/dashboard/ai-tools"
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-              >
+              </NavLink>
+              <NavLink href="/dashboard/ai-tools">
                 <Bot className="h-4 w-4" />
                 AI Tools
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
+              </NavLink>
+              <NavLink href="/dashboard/interventions">
                 <Package className="h-4 w-4" />
                 Interventions
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-              >
+              </NavLink>
+              <NavLink href="/dashboard/analytics">
                 <LineChart className="h-4 w-4" />
                 Analytics
-              </Link>
+              </NavLink>
             </nav>
           </div>
           <div className="mt-auto p-4">
@@ -171,44 +186,26 @@ export default function DashboardLayout({
                   <Logo className="h-6 w-6" />
                   <span className="sr-only">PRISm</span>
                 </Link>
-                <Link
-                  href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
+                <MobileNavLink href="/dashboard">
                   <Home className="h-5 w-5" />
                   Dashboard
-                </Link>
-                <Link
-                  href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
+                </MobileNavLink>
+                <MobileNavLink href="/dashboard/patient" badgeCount={5}>
                   <Users className="h-5 w-5" />
                   Patients
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    5
-                  </Badge>
-                </Link>
-                 <Link
-                  href="/dashboard/ai-tools"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
+                </MobileNavLink>
+                 <MobileNavLink href="/dashboard/ai-tools">
                   <Bot className="h-5 w-5" />
                   AI Tools
-                </Link>
-                 <Link
-                  href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
+                </MobileNavLink>
+                 <MobileNavLink href="/dashboard/interventions">
                   <Package className="h-5 w-5" />
                   Interventions
-                </Link>
-                 <Link
-                  href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
+                </MobileNavLink>
+                 <MobileNavLink href="/dashboard/analytics">
                   <LineChart className="h-5 w-5" />
                   Analytics
-                </Link>
+                </MobileNavLink>
               </nav>
               <div className="mt-auto">
                 <Card>
