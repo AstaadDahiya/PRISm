@@ -66,6 +66,7 @@ import {
 import AiTaskExtractor from "./_components/ai-task-extractor";
 import AiRiskAnalyzer from "./_components/ai-risk-analyzer";
 import AiPatientSummarizer from "./_components/ai-patient-summarizer";
+import AiInterventionSuggester from "./_components/ai-intervention-suggester";
 
 type ChartProps = {
   data: any[];
@@ -231,25 +232,7 @@ export default function PatientDetailPage({
             </TabsContent>
             <TabsContent value="interventions">
               <div className="grid gap-4 md:grid-cols-2">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Recommended Interventions</CardTitle>
-                    <CardDescription>
-                      AI-suggested interventions based on risk profile.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="grid gap-4">
-                    {interventions.map((item) => (
-                      <div key={item.id} className="flex items-center justify-between p-2 rounded-lg bg-background">
-                         <div>
-                            <p className="font-semibold">{item.title}</p>
-                            <p className="text-sm text-muted-foreground">{item.description}</p>
-                        </div>
-                        <Button size="sm" variant="outline"><Plus className="mr-2 h-4 w-4" /> Assign</Button>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
+                <AiInterventionSuggester patient={patient} />
                  <Card>
                   <CardHeader>
                     <CardTitle>Assigned Interventions</CardTitle>
