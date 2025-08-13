@@ -1,8 +1,4 @@
 
-
-"use client";
-
-import { useState, useEffect } from 'react';
 import { notFound } from 'next/navigation';
 import type { Patient, Task, HealthData } from "@/lib/data";
 import { getPatientData } from "@/lib/data";
@@ -19,7 +15,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Activity, BedDouble, HeartPulse, Bot } from "lucide-react";
 import Logo from "@/components/logo";
 import { UserNav } from "@/components/user-nav";
-import { Skeleton } from '@/components/ui/skeleton';
 import SecureMessagingCard from '@/components/secure-messaging-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AiPatientSummarizer from './_components/ai-patient-summarizer';
@@ -40,86 +35,14 @@ const HealthMetricCard = ({ icon: Icon, label, value, unit }: { icon: React.Elem
   </Card>
 );
 
-
-const PatientPortalSkeleton = () => (
-    <div className="min-h-screen bg-background text-foreground">
-        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-card px-4 md:px-6 z-50">
-             <Link href="/" className="flex items-center gap-2 font-semibold">
-                <Logo className="h-8 w-8 text-primary" />
-                <span className="text-xl font-headline">PRISm Portal</span>
-            </Link>
-            <div className="ml-auto">
-                <UserNav />
-            </div>
-        </header>
-        <main className="p-4 md:p-8 lg:p-12">
-            <div className="max-w-4xl mx-auto">
-                 <div className="mb-8">
-                    <Skeleton className="h-10 w-64 mb-2" />
-                    <Skeleton className="h-6 w-80" />
-                </div>
-                <div className="grid gap-8">
-                    <Card className="shadow-lg">
-                        <CardHeader>
-                            <CardTitle><Skeleton className="h-8 w-48" /></CardTitle>
-                            <CardDescription><Skeleton className="h-4 w-72" /></CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
-                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
-                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
-                        </CardContent>
-                    </Card>
-                    <Card className="shadow-lg">
-                        <CardHeader>
-                             <CardTitle><Skeleton className="h-8 w-40" /></CardTitle>
-                            <CardDescription><Skeleton className="h-4 w-64" /></CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex flex-wrap gap-4">
-                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
-                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
-                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle><Skeleton className="h-8 w-56" /></CardTitle>
-                             <CardDescription><Skeleton className="h-4 w-64" /></CardDescription>
-                        </CardHeader>
-                         <CardContent>
-                            <Skeleton className="h-96 w-full" />
-                         </CardContent>
-                    </Card>
-                </div>
-            </div>
-        </main>
-    </div>
-);
-
-
 export default function PatientPortalPage({ params }: { params: { id: string }}) {
-  const [patientData, setPatientData] = useState<{ patient: Patient; tasks: Task[]; healthData: HealthData[]; allHealthData: HealthData[] } | null>(null);
+  const data = getPatientData(params.id);
 
-  useEffect(() => {
-    const data = getPatientData(params.id);
-    if (data) {
-        setPatientData({
-            patient: data.patient,
-            tasks: data.tasks,
-            healthData: data.healthData,
-            allHealthData: data.healthData,
-        });
-    } else {
-        notFound();
-    }
-  }, [params.id]);
-
-
-  if (!patientData) {
-    return <PatientPortalSkeleton />;
+  if (!data) {
+    notFound();
   }
 
-  const { patient, tasks, healthData, allHealthData } = patientData;
+  const { patient, tasks, healthData } = data;
   const latestHealthData = healthData.length > 0 ? healthData[healthData.length - 1] : { date: '', steps: 0, sleep: 0, heartRate: 0 };
 
 
@@ -193,7 +116,7 @@ export default function PatientPortalPage({ params }: { params: { id: string }})
                             <CardDescription>Use these AI-powered tools to better understand your health and prepare for appointments.</CardDescription>
                         </CardHeader>
                     </Card>
-                    <AiPatientSummarizer patient={patient} healthData={allHealthData} tasks={tasks} />
+                    <AiPatientSummarizer patient={patient} healthData={healthData} tasks={tasks} />
                     <AiPatientTaskExtractor patientId={patient.id} />
                  </div>
             </TabsContent>
