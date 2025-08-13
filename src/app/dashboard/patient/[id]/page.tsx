@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import {
   getPatientData,
-  interventions,
+  interventions as allInterventions,
   type HealthData,
   type RiskHistory,
   type RiskFactors,
@@ -131,7 +131,7 @@ export default function PatientDetailPage({
     notFound();
   }
 
-  const { patient, tasks, messages, healthData, riskHistory, riskFactors } = data;
+  const { patient, tasks, messages, healthData, riskHistory, riskFactors, interventions } = data;
 
   const getStatusVariant = (status: 'At Risk' | 'Discharged' | 'On Track'): "destructive" | "secondary" | "default" => {
     switch (status) {
@@ -182,7 +182,7 @@ export default function PatientDetailPage({
           <Tabs defaultValue="ai-tools">
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="ai-tools">AI Tools</TabsTrigger>
-              <TabsTrigger value="risk-analysis">Health Data</TabsTrigger>
+              <TabsTrigger value="health-data">Health Data</TabsTrigger>
               <TabsTrigger value="interventions">Interventions</TabsTrigger>
             </TabsList>
              <TabsContent value="ai-tools">
@@ -193,7 +193,7 @@ export default function PatientDetailPage({
                 <AiVideoSummarizer patient={patient} />
               </div>
             </TabsContent>
-            <TabsContent value="risk-analysis">
+            <TabsContent value="health-data">
               <div className="grid gap-4 md:grid-cols-2">
                  <Card>
                   <CardHeader>
@@ -250,13 +250,19 @@ export default function PatientDetailPage({
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="grid gap-4">
-                     <div className="flex items-center justify-between p-2 rounded-lg bg-background">
-                         <div>
-                            <p className="font-semibold">Medication Adherence Program</p>
-                            <p className="text-sm text-muted-foreground">Status: In Progress</p>
+                    {interventions.length > 0 ? (
+                      interventions.map((item) => (
+                        <div key={item.id} className="flex items-center justify-between p-2 rounded-lg bg-background">
+                            <div>
+                              <p className="font-semibold">{item.title}</p>
+                              <p className="text-sm text-muted-foreground">{item.description}</p>
+                          </div>
+                          <Button size="sm" variant="ghost">Manage</Button>
                         </div>
-                        <Button size="sm" variant="ghost">Manage</Button>
-                      </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">No interventions assigned.</p>
+                    )}
                   </CardContent>
                 </Card>
               </div>

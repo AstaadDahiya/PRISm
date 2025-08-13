@@ -43,7 +43,7 @@ export type Intervention = {
   id: string;
   title: string;
   description: string;
-  category: 'Medication' | 'Lifestyle' | 'Appointment';
+  category: 'Medication' | 'Lifestyle' | 'Appointment' | 'Monitoring';
 };
 
 export type RiskFactors = {
@@ -146,12 +146,19 @@ export const riskHistory: { [patientId: string]: RiskHistory[] } = {
   ]
 };
 
-export const interventions: Intervention[] = [
-    { id: 'i1', title: 'Medication Adherence Program', description: 'Enroll patient in a program to improve medication adherence.', category: 'Medication' },
-    { id: 'i2', title: 'Dietary Consultation', description: 'Schedule a consultation with a dietitian.', category: 'Lifestyle' },
-    { id: 'i3', title: 'Physical Therapy Referral', description: 'Refer patient for physical therapy evaluation.', category: 'Appointment' },
-    { id: 'i4', title: 'Remote Heart Rate Monitoring', description: 'Set up daily remote monitoring for heart rate fluctuations.', category: 'Lifestyle' },
-];
+export const interventions: { [patientId: string]: Intervention[] } = {
+    '1': [
+        { id: 'i1', title: 'Medication Adherence Program', description: 'Enroll patient in a program to improve medication adherence.', category: 'Medication' },
+        { id: 'i2', title: 'Dietary Consultation', description: 'Schedule a consultation with a dietitian.', category: 'Lifestyle' },
+    ],
+    '2': [
+       { id: 'i3', title: 'Physical Therapy Referral', description: 'Refer patient for physical therapy evaluation.', category: 'Appointment' },
+    ],
+    '4': [
+       { id: 'i4', title: 'Remote Heart Rate Monitoring', description: 'Set up daily remote monitoring for heart rate fluctuations.', category: 'Monitoring' },
+    ]
+};
+
 
 export const riskFactors: { [key: string]: RiskFactors[] } = {
     '1': [
@@ -172,6 +179,7 @@ export const getPatientData = (id: string) => {
         messages: messages.filter(m => m.patientId === id),
         healthData: healthData[id] || [],
         riskHistory: riskHistory[id] || [],
-        riskFactors: riskFactors[id] || []
+        riskFactors: riskFactors[id] || [],
+        interventions: interventions[id] || []
     }
 }
