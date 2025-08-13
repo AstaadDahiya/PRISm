@@ -179,12 +179,20 @@ export default function PatientDetailPage({
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-5 grid gap-4">
-          <Tabs defaultValue="risk-analysis">
+          <Tabs defaultValue="ai-tools">
             <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="risk-analysis">Risk Analysis</TabsTrigger>
-              <TabsTrigger value="interventions">Interventions</TabsTrigger>
               <TabsTrigger value="ai-tools">AI Tools</TabsTrigger>
+              <TabsTrigger value="risk-analysis">Health Data</TabsTrigger>
+              <TabsTrigger value="interventions">Interventions</TabsTrigger>
             </TabsList>
+             <TabsContent value="ai-tools">
+              <div className="grid gap-4">
+                <AiRiskAnalyzer patient={patient} healthData={healthData} />
+                <AiInterventionSuggester patient={patient} />
+                <AiTaskExtractor patientId={patient.id} />
+                <AiVideoSummarizer patient={patient} />
+              </div>
+            </TabsContent>
             <TabsContent value="risk-analysis">
               <div className="grid gap-4 md:grid-cols-2">
                  <Card>
@@ -233,8 +241,7 @@ export default function PatientDetailPage({
               </Card>
             </TabsContent>
             <TabsContent value="interventions">
-              <div className="grid gap-4 md:grid-cols-2">
-                <AiInterventionSuggester patient={patient} />
+              <div className="grid gap-4 md:grid-cols-1">
                  <Card>
                   <CardHeader>
                     <CardTitle>Assigned Interventions</CardTitle>
@@ -252,13 +259,6 @@ export default function PatientDetailPage({
                       </div>
                   </CardContent>
                 </Card>
-              </div>
-            </TabsContent>
-            <TabsContent value="ai-tools">
-              <div className="grid gap-4">
-                <AiVideoSummarizer patient={patient} />
-                <AiTaskExtractor patientId={patient.id} />
-                <AiRiskAnalyzer patient={patient} healthData={healthData} />
               </div>
             </TabsContent>
           </Tabs>
