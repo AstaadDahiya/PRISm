@@ -6,6 +6,7 @@ import {
   Package,
   Settings,
   Users,
+  Bot,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -47,13 +48,20 @@ export default function DashboardLayout({
               </Link>
               <Link
                 href="/dashboard"
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
               >
                 <Users className="h-4 w-4" />
                 Patients
                 <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                   5
                 </Badge>
+              </Link>
+              <Link
+                href="/dashboard/ai-tools"
+                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
+              >
+                <Bot className="h-4 w-4" />
+                AI Tools
               </Link>
               <Link
                 href="/dashboard"
@@ -120,13 +128,20 @@ export default function DashboardLayout({
                 </Link>
                 <Link
                   href="/dashboard"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <Users className="h-5 w-5" />
                   Patients
                   <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
                     5
                   </Badge>
+                </Link>
+                 <Link
+                  href="/dashboard/ai-tools"
+                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
+                >
+                  <Bot className="h-5 w-5" />
+                  AI Tools
                 </Link>
                  <Link
                   href="/dashboard"

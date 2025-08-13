@@ -179,20 +179,11 @@ export default function PatientDetailPage({
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-5 grid gap-4">
-          <Tabs defaultValue="ai-tools">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="ai-tools">AI Tools</TabsTrigger>
+          <Tabs defaultValue="health-data">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="health-data">Health Data</TabsTrigger>
               <TabsTrigger value="interventions">Interventions</TabsTrigger>
             </TabsList>
-             <TabsContent value="ai-tools">
-              <div className="grid gap-4">
-                <AiRiskAnalyzer patient={patient} healthData={healthData} />
-                <AiInterventionSuggester patient={patient} />
-                <AiTaskExtractor patientId={patient.id} />
-                <AiVideoSummarizer patient={patient} />
-              </div>
-            </TabsContent>
             <TabsContent value="health-data">
               <div className="grid gap-4 md:grid-cols-2">
                  <Card>
