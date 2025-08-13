@@ -2,33 +2,33 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Bot, Loader2, Sparkles, Video } from "lucide-react";
+import { Bot, Loader2, Sparkles, Video, FileText } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { generateVideoSummary } from "@/ai/flows/generate-video-summary";
+import { generateVideoDescription } from "@/ai/flows/generate-video-description";
 import type { Patient } from "@/lib/data";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function AiVideoSummarizer({ patient }: { patient: Patient }) {
-  const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const [summary, setSummary] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const { toast } = useToast();
 
-  const handleGenerateVideo = () => {
+  const handleGenerate = () => {
     startTransition(async () => {
-        setVideoUrl(null);
+        setSummary(null);
       try {
-        const result = await generateVideoSummary({ 
+        const result = await generateVideoDescription({ 
             patientName: patient.name,
             patientStatus: patient.status,
             riskScore: patient.riskScore,
         });
-        if (result && result.videoUrl) {
-          setVideoUrl(result.videoUrl);
+        if (result && result.description) {
+          setSummary(result.description);
           toast({
-            title: "Video Summary Ready",
-            description: "AI-generated video summary has been created.",
+            title: "Symbolic Summary Ready",
+            description: "AI-generated summary has been created.",
           });
         } else {
             throw new Error("Invalid response from AI");
@@ -36,19 +36,15 @@ export default function AiVideoSummarizer({ patient }: { patient: Patient }) {
       } catch (error: any) {
         console.error("Failed to generate video summary:", error);
         
-        let description = "Could not generate the video summary. This is an experimental feature and may fail. Please try again.";
-        // Check for specific billing error from the Gemini API
-        if (error.message && error.message.includes("billing enabled")) {
-            description = "Video generation requires a Google Cloud project with billing enabled. Please enable billing in your GCP console to use this feature.";
-        }
-
+        let description = "Could not generate the summary. Please try again.";
+       
         toast({
-          title: "Video Generation Failed",
+          title: "Summary Generation Failed",
           description: description,
           variant: "destructive",
           duration: 9000,
         });
-        setVideoUrl(null);
+        setSummary(null);
       }
     });
   };
@@ -58,47 +54,37 @@ export default function AiVideoSummarizer({ patient }: { patient: Patient }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
             <Video />
-            AI Video Summary
+            AI Symbolic Summary
         </CardTitle>
         <CardDescription>
-          Generate a short, symbolic video representing the patient's current status. (Experimental)
+          Generate a short, symbolic text description representing the patient's current status.
         </CardDescription>
       </CardHeader>
       <CardContent className="grid gap-6">
         <div>
-          <Button onClick={handleGenerateVideo} disabled={isPending}>
+          <Button onClick={handleGenerate} disabled={isPending}>
             {isPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Generating Video... (can take a minute)
+                Generating Summary...
               </>
             ) : (
               <>
                 <Sparkles className="mr-2 h-4 w-4" />
-                Generate Video
+                Generate Summary
               </>
             )}
           </Button>
         </div>
         
-        {isPending && (
-             <Alert>
-                <AlertDescription>
-                    The AI is generating a video based on the patient's status. This process may take up to a minute. Please wait.
-                </AlertDescription>
-            </Alert>
-        )}
-
-        {videoUrl && (
-          <div className="rounded-lg overflow-hidden border">
-            <video
-              src={videoUrl}
-              controls
-              className="w-full aspect-video"
-            >
-              Your browser does not support the video tag.
-            </video>
-          </div>
+        {summary && (
+          <Alert>
+              <FileText className="h-4 w-4" />
+              <AlertTitle>AI Symbolic Summary</AlertTitle>
+              <AlertDescription className="font-body">
+                  {summary}
+              </AlertDescription>
+          </Alert>
         )}
       </CardContent>
     </Card>
