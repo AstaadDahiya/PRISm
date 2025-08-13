@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { notFound } from "next/navigation";
-import { getPatientData, type HealthData, type Patient, type Task } from "@/lib/data";
+import type { Patient, Task, HealthData } from "@/lib/data";
+import { getPatientData } from "@/lib/data";
 import Image from "next/image";
+import Link from "next/link";
+import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
+
 import {
   Card,
   CardContent,
@@ -16,12 +19,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Activity, BedDouble, HeartPulse, Send, MessageSquare } from "lucide-react";
 import Logo from "@/components/logo";
-import Link from "next/link";
 import { UserNav } from "@/components/user-nav";
 import { db } from '@/lib/firebase';
-import { collection, query, orderBy, onSnapshot, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+
 
 type Message = {
   id: string;
@@ -62,15 +65,87 @@ const MessagingSkeleton = () => (
   </div>
 )
 
+const PatientPortalSkeleton = () => (
+    <div className="min-h-screen bg-background text-foreground">
+        <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-card px-4 md:px-6 z-50">
+             <Link href="/" className="flex items-center gap-2 font-semibold">
+                <Logo className="h-8 w-8 text-primary" />
+                <span className="text-xl font-headline">PRISm Portal</span>
+            </Link>
+            <div className="ml-auto">
+                <UserNav />
+            </div>
+        </header>
+        <main className="p-4 md:p-8 lg:p-12">
+            <div className="max-w-4xl mx-auto">
+                 <div className="mb-8">
+                    <Skeleton className="h-10 w-64 mb-2" />
+                    <Skeleton className="h-6 w-80" />
+                </div>
+                <div className="grid gap-8">
+                    <Card className="shadow-lg">
+                        <CardHeader>
+                            <CardTitle><Skeleton className="h-8 w-48" /></CardTitle>
+                            <CardDescription><Skeleton className="h-4 w-72" /></CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
+                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
+                            <div className="flex items-center gap-4"><Skeleton className="h-5 w-5 rounded-sm" /><Skeleton className="h-6 w-full" /></div>
+                        </CardContent>
+                    </Card>
+                    <Card className="shadow-lg">
+                        <CardHeader>
+                             <CardTitle><Skeleton className="h-8 w-40" /></CardTitle>
+                            <CardDescription><Skeleton className="h-4 w-64" /></CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex flex-wrap gap-4">
+                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
+                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
+                            <Skeleton className="h-24 flex-1 min-w-[150px] rounded-lg" />
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle><Skeleton className="h-8 w-56" /></CardTitle>
+                             <CardDescription><Skeleton className="h-4 w-64" /></CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex flex-col h-[400px]">
+                             <div className="flex-grow space-y-4 overflow-y-auto pr-2 bg-background p-4 rounded-lg">
+                                <MessagingSkeleton />
+                            </div>
+                            <div className="mt-4 flex gap-2">
+                                <Skeleton className="h-12 flex-grow" />
+                                <Skeleton className="h-12 w-16" />
+                            </div>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </main>
+    </div>
+)
+
+
 export default function PatientPortal({ patientId }: { patientId: string}) {
-  const data = getPatientData(patientId);
+  const [patientData, setPatientData] = useState<{ patient: Patient; tasks: Task[]; healthData: HealthData; } | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
+    const data = getPatientData(patientId);
+    if (data) {
+        const latestHealthData = data.healthData[data.healthData.length - 1] || { steps: 0, sleep: 0, heartRate: 0 };
+        setPatientData({
+            patient: data.patient,
+            tasks: data.tasks,
+            healthData: latestHealthData
+        });
+    }
+
     const q = query(
       collection(db, `patients/${patientId}/messages`),
       orderBy("timestamp", "asc")
@@ -82,7 +157,7 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
         msgs.push({ id: doc.id, ...doc.data() } as Message);
       });
       setMessages(msgs);
-      setLoading(false);
+      setLoadingMessages(false);
     }, (error) => {
       console.error("Error fetching messages: ", error);
       toast({
@@ -90,7 +165,7 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
         description: "Could not load messages.",
         variant: "destructive"
       })
-      setLoading(false);
+      setLoadingMessages(false);
     });
 
     return () => unsubscribe();
@@ -122,13 +197,11 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
   };
 
 
-  if (!data) {
-    // We could show a loading state here until the data is available
-    return notFound();
+  if (!patientData) {
+    return <PatientPortalSkeleton />;
   }
 
-  const { patient, tasks, healthData } = data;
-  const latestHealthData = healthData[healthData.length - 1] || { steps: 0, sleep: 0, heartRate: 0 };
+  const { patient, tasks, healthData } = patientData;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -175,9 +248,9 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
                 <CardDescription>Your latest data from your connected devices.</CardDescription>
               </CardHeader>
               <CardContent className="flex flex-wrap gap-4">
-                 <HealthMetricCard icon={HeartPulse} label="Heart Rate" value={latestHealthData.heartRate} unit="bpm" />
-                 <HealthMetricCard icon={Activity} label="Steps Today" value={latestHealthData.steps.toLocaleString()} unit="steps" />
-                 <HealthMetricCard icon={BedDouble} label="Last Night's Sleep" value={latestHealthData.sleep} unit="hours" />
+                 <HealthMetricCard icon={HeartPulse} label="Heart Rate" value={healthData.heartRate} unit="bpm" />
+                 <HealthMetricCard icon={Activity} label="Steps Today" value={healthData.steps.toLocaleString()} unit="steps" />
+                 <HealthMetricCard icon={BedDouble} label="Last Night's Sleep" value={healthData.sleep} unit="hours" />
               </CardContent>
             </Card>
 
@@ -188,14 +261,14 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
               </CardHeader>
               <CardContent className="flex flex-col h-[400px]">
                 <div className="flex-grow space-y-4 overflow-y-auto pr-2 bg-background p-4 rounded-lg">
-                 {loading ? <MessagingSkeleton /> : (
+                 {loadingMessages ? <MessagingSkeleton /> : (
                   <>
                   {messages.map((message) => (
-                    <div key={message.id} className={`flex items-end gap-2 ${message.sender === 'Patient' ? 'justify-end' : 'justify-start'}`}>
+                    <div key={message.id} className={cn('flex items-end gap-2', message.sender === 'Patient' ? 'justify-end' : 'justify-start')}>
                       {message.sender === 'Clinician' && <Avatar className="h-8 w-8"><AvatarFallback>C</AvatarFallback></Avatar>}
-                      <div className={`rounded-lg px-4 py-3 max-w-sm shadow-md ${message.sender === 'Clinician' ? 'bg-card' : 'bg-primary text-primary-foreground'}`}>
+                      <div className={cn('rounded-lg px-4 py-3 max-w-sm shadow-md', message.sender === 'Clinician' ? 'bg-card' : 'bg-primary text-primary-foreground')}>
                         <p className="text-base">{message.text}</p>
-                        <p className={`text-xs mt-1 text-right ${message.sender === 'Clinician' ? 'text-muted-foreground' : 'text-primary-foreground/70'}`}>
+                        <p className={cn('text-xs mt-1 text-right', message.sender === 'Clinician' ? 'text-muted-foreground' : 'text-primary-foreground/70')}>
                            {message.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) || 'Sending...'}
                         </p>
                       </div>
@@ -220,7 +293,7 @@ export default function PatientPortal({ patientId }: { patientId: string}) {
 }
 
 const Avatar = ({ className, children }: { className?: string, children: React.ReactNode }) => (
-    <div className={`flex items-center justify-center rounded-full bg-muted text-muted-foreground ${className}`}>
+    <div className={cn('flex items-center justify-center rounded-full bg-muted text-muted-foreground', className)}>
         {children}
     </div>
 )
