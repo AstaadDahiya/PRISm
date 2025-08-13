@@ -68,6 +68,7 @@ import AiRiskAnalyzer from "./_components/ai-risk-analyzer";
 import AiPatientSummarizer from "./_components/ai-patient-summarizer";
 import AiInterventionSuggester from "./_components/ai-intervention-suggester";
 import SecureMessaging from "./_components/secure-messaging";
+import AiVideoSummarizer from "./_components/ai-video-summarizer";
 
 type ChartProps = {
   data: any[];
@@ -255,6 +256,7 @@ export default function PatientDetailPage({
             </TabsContent>
             <TabsContent value="ai-tools">
               <div className="grid gap-4">
+                <AiVideoSummarizer patient={patient} />
                 <AiTaskExtractor patientId={patient.id} />
                 <AiRiskAnalyzer patient={patient} healthData={healthData} />
               </div>
