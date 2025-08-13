@@ -43,79 +43,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-  ChartLegend,
-  ChartLegendContent,
-} from "@/components/ui/chart";
-import {
-  Bar,
-  BarChart,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  XAxis,
-  YAxis,
-  Tooltip as RechartsTooltip,
-  Legend as RechartsLegend,
-  Cell,
-} from "recharts";
 import AiPatientSummarizer from "./_components/ai-patient-summarizer";
 import SecureMessaging from "./_components/secure-messaging";
+import { RiskTrendChart } from "./_components/risk-trend-chart";
+import { RiskFactorsChart } from "./_components/risk-factors-chart";
+import { HealthDataChart } from "./_components/health-data-chart";
 
-type ChartProps = {
-  data: any[];
-};
-
-const RiskTrendChart = ({ data }: { data: RiskHistory[] }) => (
-  <ChartContainer config={{}} className="min-h-[200px] w-full">
-    <LineChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 0 }}>
-      <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-      <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} domain={[0, 100]} />
-      <RechartsTooltip content={<ChartTooltipContent />} />
-      <Line
-        type="monotone"
-        dataKey="riskScore"
-        stroke="hsl(var(--primary))"
-        strokeWidth={2}
-        dot={{ r: 4, fill: "hsl(var(--primary))" }}
-      />
-    </LineChart>
-  </ChartContainer>
-);
-
-const COLORS = ["hsl(var(--chart-1))", "hsl(var(--chart-2))", "hsl(var(--chart-3))", "hsl(var(--chart-4))"];
-
-const RiskFactorsChart = ({ data }: { data: RiskFactors[] }) => (
-    <ChartContainer config={{}} className="min-h-[200px] w-full aspect-square">
-        <PieChart>
-            <RechartsTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Pie data={data} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="hsl(var(--primary))" label>
-                 {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                ))}
-            </Pie>
-            <RechartsLegend content={<ChartLegendContent />} />
-        </PieChart>
-    </ChartContainer>
-);
-
-
-const HealthDataChart = ({ data }: { data: HealthData[] }) => (
-  <ChartContainer config={{}} className="min-h-[200px] w-full">
-    <BarChart data={data} margin={{ top: 5, right: 20, left: -10, bottom: 0 }}>
-      <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" fontSize={12} />
-      <YAxis stroke="hsl(var(--muted-foreground))" fontSize={12} />
-      <RechartsTooltip content={<ChartTooltipContent />} />
-      <RechartsLegend content={<ChartLegendContent />} />
-      <Bar dataKey="steps" fill="hsl(var(--chart-1))" name="Steps" radius={[4, 4, 0, 0]} />
-    </BarChart>
-  </ChartContainer>
-);
 
 export default function PatientDetailPage({
   params,
