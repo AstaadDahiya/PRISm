@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useTransition } from "react";
@@ -32,12 +33,20 @@ export default function AiVideoSummarizer({ patient }: { patient: Patient }) {
         } else {
             throw new Error("Invalid response from AI");
         }
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to generate video summary:", error);
+        
+        let description = "Could not generate the video summary. This is an experimental feature and may fail. Please try again.";
+        // Check for specific billing error from the Gemini API
+        if (error.message && error.message.includes("billing enabled")) {
+            description = "Video generation requires a Google Cloud project with billing enabled. Please enable billing in your GCP console to use this feature.";
+        }
+
         toast({
           title: "Video Generation Failed",
-          description: "Could not generate the video summary. This is an experimental feature and may fail. Please try again.",
+          description: description,
           variant: "destructive",
+          duration: 9000,
         });
         setVideoUrl(null);
       }
