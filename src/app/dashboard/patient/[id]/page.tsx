@@ -63,12 +63,8 @@ import {
   Legend as RechartsLegend,
   Cell,
 } from "recharts";
-import AiTaskExtractor from "./_components/ai-task-extractor";
-import AiRiskAnalyzer from "./_components/ai-risk-analyzer";
 import AiPatientSummarizer from "./_components/ai-patient-summarizer";
-import AiInterventionSuggester from "./_components/ai-intervention-suggester";
 import SecureMessaging from "./_components/secure-messaging";
-import AiVideoSummarizer from "./_components/ai-video-summarizer";
 
 type ChartProps = {
   data: any[];
@@ -179,7 +175,7 @@ export default function PatientDetailPage({
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-5 grid gap-4">
-          <Tabs defaultValue="interventions">
+          <Tabs defaultValue="health-data">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="health-data">Health Data</TabsTrigger>
               <TabsTrigger value="interventions">Interventions</TabsTrigger>
