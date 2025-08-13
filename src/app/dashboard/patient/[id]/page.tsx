@@ -64,6 +64,8 @@ import {
   Cell,
 } from "recharts";
 import AiTaskExtractor from "./_components/ai-task-extractor";
+import AiRiskAnalyzer from "./_components/ai-risk-analyzer";
+import AiPatientSummarizer from "./_components/ai-patient-summarizer";
 
 type ChartProps = {
   data: any[];
@@ -167,6 +169,9 @@ export default function PatientDetailPage({
             </div>
           </div>
         </CardHeader>
+        <CardContent>
+          <AiPatientSummarizer patient={patient} healthData={healthData} tasks={tasks} />
+        </CardContent>
       </Card>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
@@ -265,7 +270,10 @@ export default function PatientDetailPage({
               </div>
             </TabsContent>
             <TabsContent value="ai-tools">
+              <div className="grid gap-4">
                 <AiTaskExtractor patientId={patient.id} />
+                <AiRiskAnalyzer patient={patient} healthData={healthData} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>
@@ -325,3 +333,4 @@ const Avatar = ({ className, children }: { className?: string, children: React.R
 const AvatarFallback = ({ children }: { children: React.ReactNode }) => (
     <span className="font-semibold">{children}</span>
 )
+const cn = (...args: any[]) => args.filter(Boolean).join(" ");
