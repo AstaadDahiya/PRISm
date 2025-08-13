@@ -179,7 +179,7 @@ export default function PatientDetailPage({
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-5 grid gap-4">
-          <Tabs defaultValue="health-data">
+          <Tabs defaultValue="interventions">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="health-data">Health Data</TabsTrigger>
               <TabsTrigger value="interventions">Interventions</TabsTrigger>

@@ -17,8 +17,8 @@ export function UserNav() {
   // In a real app, you'd get this from an auth hook
   const user = {
     uid: 'clinician_1_uid',
-    name: 'Dr. Alice Smith',
-    email: 'alice.smith@hospital.com',
+    name: 'Dr. Aditi Sharma',
+    email: 'aditi.sharma@hospital.com',
   };
 
   return (
@@ -50,7 +50,7 @@ export function UserNav() {
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
           </DropdownMenuItem>
-           <DropdownMenuItem>
+          <DropdownMenuItem>
             <CreditCard className="mr-2 h-4 w-4" />
             <span>Billing</span>
           </DropdownMenuItem>
