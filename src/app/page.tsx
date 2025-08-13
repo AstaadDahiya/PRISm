@@ -9,11 +9,13 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <div className="flex flex-col items-center text-center mb-12">
-        <Logo className="h-16 w-16 mb-4 text-primary" />
-        <h1 className="text-5xl font-bold font-headline text-foreground">
+        <div className="w-[500px] h-[320px]">
+          <Logo className="w-full h-full" showText={true} />
+        </div>
+        <h1 className="text-5xl font-bold font-headline text-foreground sr-only">
           Welcome to PRISm
         </h1>
-        <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+        <p className="mt-4 max-w-2xl text-lg text-muted-foreground sr-only">
           The Patient Readmission Intelligence System designed to enhance patient care and reduce readmission rates through smart, AI-driven insights.
         </p>
       </div>
