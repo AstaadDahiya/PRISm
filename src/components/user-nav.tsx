@@ -1,5 +1,6 @@
 "use client";
 
+import { useAuth } from "@/hooks/use-auth";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,30 +12,38 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CreditCard, LogOut, Settings, User } from "lucide-react";
+import { CreditCard, LogOut, Settings, User, Loader2 } from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
 
 export function UserNav() {
-  // In a real app, you'd get this from an auth hook
-  const user = {
-    uid: 'clinician_1_uid',
-    name: 'Dr. Aditi Sharma',
-    email: 'aditi.sharma@hospital.com',
-  };
+  const { user, loading, signOut } = useAuth();
 
+  if (loading) {
+    return <Skeleton className="h-9 w-9 rounded-full" />;
+  }
+  
+  const getInitials = (name: string | null | undefined) => {
+    return name ? name.split(' ').map(n => n[0]).join('') : 'U';
+  }
+
+  if (!user) {
+    return null;
+  }
+  
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-9 w-9 rounded-full">
           <Avatar className="h-9 w-9">
-            <AvatarImage src="https://placehold.co/100x100.png" alt="@shadcn" data-ai-hint="doctor portrait" />
-            <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+             <AvatarImage src={user.photoURL || `https://placehold.co/100x100.png`} alt={user.displayName || "User"} data-ai-hint="doctor portrait" />
+            <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
+            <p className="text-sm font-medium leading-none">{user.displayName || "Clinician"}</p>
             <p className="text-xs leading-none text-muted-foreground">
               {user.email}
             </p>
@@ -56,7 +65,7 @@ export function UserNav() {
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={signOut}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

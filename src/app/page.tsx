@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { ArrowRight, Stethoscope, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -20,22 +21,22 @@ export default function Home() {
        <div className="w-full max-w-sm">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl font-headline">Login</CardTitle>
+            <CardTitle className="text-2xl font-headline">Get Started</CardTitle>
             <CardDescription>
-              Select your role to access the portal.
+              Login to your account or create a new one.
             </CardDescription>
           </CardHeader>
           <CardContent className="grid gap-4">
             <Button asChild className="w-full" size="lg">
-              <Link href="/dashboard">
-                <Stethoscope className="mr-2 h-5 w-5" />
+              <Link href="/login">
+                <LogIn className="mr-2 h-5 w-5" />
                 Clinician Login
               </Link>
             </Button>
-            <Button asChild className="w-full" variant="secondary" size="lg">
-               <Link href="/dashboard/patient-view">
+             <Button asChild className="w-full" size="lg" variant="secondary">
+              <Link href="/dashboard/patient-view">
                 <User className="mr-2 h-5 w-5" />
-                Patient Login
+                Patient Portal
               </Link>
             </Button>
           </CardContent>
