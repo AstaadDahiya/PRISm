@@ -34,7 +34,7 @@ export default function Home() {
               </Link>
             </Button>
              <Button asChild className="w-full" size="lg" variant="secondary">
-              <Link href="/dashboard/patient-view">
+              <Link href="/patient-portal/1">
                 <User className="mr-2 h-5 w-5" />
                 Patient Portal
               </Link>
