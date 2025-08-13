@@ -1,227 +1,185 @@
 import React from 'react';
 
-const Logo: React.FC<{ width?: number; height?: number; className?: string }> = ({ 
+const ProfessionalPrismLogo: React.FC<{ width?: number; height?: number; className?: string }> = ({ 
   width = 500, 
-  height = 350, 
+  height = 320, 
   className = "" 
 }) => {
   return (
     <div className={`flex items-center ${className}`} style={{ width, height }}>
-      {/* AI Neural Network Crystal */}
+      {/* Professional Crystal Icon */}
       <div className="relative mr-8">
         <svg
-          width={width * 0.28}
-          height={height * 0.85}
-          viewBox="0 0 140 160"
+          width={width * 0.26}
+          height={height * 0.8}
+          viewBox="0 0 130 150"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            {/* Gradients */}
+            {/* Professional gradients */}
             <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00D4FF" />
-              <stop offset="50%" stopColor="#0099CC" />
-              <stop offset="100%" stopColor="#006699" />
+              <stop offset="0%" stopColor="#2C5F5D" />
+              <stop offset="50%" stopColor="#3D7875" />
+              <stop offset="100%" stopColor="#4A9B96" />
             </linearGradient>
             <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#00FF88" />
-              <stop offset="100%" stopColor="#00CC6A" />
+              <stop offset="0%" stopColor="#5BA8A3" />
+              <stop offset="100%" stopColor="#7BC4BF" />
             </linearGradient>
-            <radialGradient id="glowGradient" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#00D4FF" stopOpacity="0.8" />
-              <stop offset="100%" stopColor="#00D4FF" stopOpacity="0" />
-            </radialGradient>
+            <linearGradient id="shadowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#1A4440" />
+              <stop offset="100%" stopColor="#2C5F5D" />
+            </linearGradient>
             
-            {/* Filters */}
-            <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-              <feMerge> 
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-            
+            {/* Professional shadow filter */}
             <filter id="drop-shadow" x="-20%" y="-20%" width="140%" height="140%">
-              <feDropShadow dx="0" dy="4" stdDeviation="8" floodColor="#00D4FF" floodOpacity="0.3"/>
+              <feDropShadow dx="0" dy="6" stdDeviation="12" floodColor="#2C5F5D" floodOpacity="0.25"/>
             </filter>
           </defs>
           
-          <g transform="translate(70, 80)">
-            {/* Outer glow effect */}
-            <circle cx="0" cy="0" r="65" fill="url(#glowGradient)" opacity="0.4" />
-            
+          <g transform="translate(65, 75)">
             {/* Main crystal structure */}
             <g filter="url(#drop-shadow)">
-              {/* Back faces */}
+              {/* Primary crystal shape */}
               <path
-                d="M0 -50 L-30 -20 L-40 20 L0 45 L40 20 L30 -20 Z"
+                d="M0 -48 L-28 -18 L-36 18 L0 42 L36 18 L28 -18 Z"
                 fill="url(#primaryGradient)"
-                opacity="0.9"
               />
               
-              {/* Faceted surfaces with modern styling */}
-              <path d="M0 -50 L-30 -20 L0 -15 Z" fill="#00E6FF" opacity="0.8" />
-              <path d="M0 -50 L30 -20 L0 -15 Z" fill="#00F0FF" opacity="0.9" />
-              <path d="M-30 -20 L-40 20 L0 -15 Z" fill="#0099DD" opacity="0.7" />
-              <path d="M30 -20 L40 20 L0 -15 Z" fill="#00CCFF" opacity="0.8" />
-              <path d="M-40 20 L0 45 L0 -15 Z" fill="#007AAA" opacity="0.6" />
-              <path d="M40 20 L0 45 L0 -15 Z" fill="#0099CC" opacity="0.7" />
+              {/* Professional faceted surfaces */}
+              <path d="M0 -48 L-28 -18 L0 -12 Z" fill="#5BA8A3" />
+              <path d="M0 -48 L28 -18 L0 -12 Z" fill="#6BB3AE" />
+              <path d="M-28 -18 L-36 18 L0 -12 Z" fill="#4A9B96" />
+              <path d="M28 -18 L36 18 L0 -12 Z" fill="#5BA8A3" />
+              <path d="M-36 18 L0 42 L0 -12 Z" fill="url(#shadowGradient)" />
+              <path d="M36 18 L0 42 L0 -12 Z" fill="#4A9B96" />
             </g>
             
-            {/* AI Neural network nodes */}
-            <g filter="url(#glow)">
-              {/* Core nodes */}
-              <circle cx="0" cy="-25" r="4" fill="#00FF88" />
-              <circle cx="-15" cy="-5" r="3" fill="#00FF88" />
-              <circle cx="15" cy="-5" r="3" fill="#00FF88" />
-              <circle cx="-20" cy="15" r="3" fill="#00FF88" />
-              <circle cx="20" cy="15" r="3" fill="#00FF88" />
-              <circle cx="0" cy="25" r="4" fill="#00FF88" />
-              
-              {/* Connection lines */}
-              <g stroke="#00FF88" strokeWidth="1.5" opacity="0.6">
-                <line x1="0" y1="-25" x2="-15" y2="-5" />
-                <line x1="0" y1="-25" x2="15" y2="-5" />
-                <line x1="-15" y1="-5" x2="-20" y2="15" />
-                <line x1="15" y1="-5" x2="20" y2="15" />
-                <line x1="-15" y1="-5" x2="0" y2="25" />
-                <line x1="15" y1="-5" x2="0" y2="25" />
-                <line x1="-20" y1="15" x2="0" y2="25" />
-                <line x1="20" y1="15" x2="0" y2="25" />
-              </g>
-              
-              {/* Pulse effect nodes */}
-              <g opacity="0.4">
-                <circle cx="0" cy="-25" r="8" fill="none" stroke="#00FF88" strokeWidth="1">
-                  <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite" />
-                </circle>
-                <circle cx="0" cy="25" r="8" fill="none" stroke="#00FF88" strokeWidth="1">
-                  <animate attributeName="r" values="8;12;8" dur="2s" begin="1s" repeatCount="indefinite" />
-                  <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" begin="1s" repeatCount="indefinite" />
-                </circle>
-              </g>
+            {/* Professional healthcare cross */}
+            <g transform="translate(0, -6)">
+              <rect x="-2.5" y="-12" width="5" height="24" fill="#ffffff" opacity="0.9" rx="1" />
+              <rect x="-12" y="-2.5" width="24" height="5" fill="#ffffff" opacity="0.9" rx="1" />
             </g>
             
-            {/* Healthcare cross symbol integration */}
-            <g transform="translate(0, -15)" opacity="0.3">
-              <rect x="-2" y="-8" width="4" height="16" fill="#00FF88" rx="2" />
-              <rect x="-8" y="-2" width="16" height="4" fill="#00FF88" rx="2" />
+            {/* Precision edge highlights */}
+            <g stroke="#ffffff" strokeWidth="0.8" fill="none" opacity="0.4">
+              <path d="M0 -48 L0 42" />
+              <path d="M-28 -18 L28 -18" />
+              <path d="M-36 18 L36 18" />
             </g>
             
-            {/* Edge highlights */}
-            <g stroke="#fff" strokeWidth="0.5" fill="none" opacity="0.4">
-              <path d="M0 -50 L0 45" />
-              <path d="M-30 -20 L30 -20" />
-              <path d="M-40 20 L40 20" />
+            {/* Professional corner accents */}
+            <g fill="#7BC4BF" opacity="0.6">
+              <circle cx="-28" cy="-18" r="1.5" />
+              <circle cx="28" cy="-18" r="1.5" />
+              <circle cx="-36" cy="18" r="1.5" />
+              <circle cx="36" cy="18" r="1.5" />
             </g>
-          </g>
-          
-          {/* Floating data particles */}
-          <g opacity="0.6">
-            <circle cx="20" cy="30" r="1.5" fill="#00D4FF">
-              <animateTransform attributeName="transform" type="translate" 
-                values="0,0; 10,-10; 0,0" dur="3s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="110" cy="50" r="1" fill="#00FF88">
-              <animateTransform attributeName="transform" type="translate" 
-                values="0,0; -8,12; 0,0" dur="4s" repeatCount="indefinite" />
-            </circle>
-            <circle cx="25" cy="120" r="1.5" fill="#00D4FF">
-              <animateTransform attributeName="transform" type="translate" 
-                values="0,0; 15,-5; 0,0" dur="2.5s" repeatCount="indefinite" />
-            </circle>
           </g>
         </svg>
       </div>
       
-      {/* Modern Typography */}
+      {/* Professional Typography */}
       <div className="flex flex-col">
         {/* Main PRISM text */}
-        <div className="flex items-center mb-3">
-          <div className="relative">
-            <span 
-              className="text-7xl font-black tracking-tight"
-              style={{ 
-                background: 'linear-gradient(135deg, #001F3F 0%, #003D7A 50%, #0066CC 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
-                textShadow: '0 4px 20px rgba(0, 102, 204, 0.3)'
-              }}
-            >
-              PRI
-            </span>
-            
-            {/* AI-enhanced 'i' dot */}
-            <div className="absolute top-2 left-1/2 transform -translate-x-1/2">
-              <svg width="16" height="16" viewBox="0 0 16 16" className="animate-pulse">
-                <circle cx="8" cy="8" r="6" fill="url(#accentGradient)" opacity="0.8" />
-                <circle cx="8" cy="8" r="3" fill="#00FF88" />
-                <circle cx="8" cy="8" r="8" fill="none" stroke="#00FF88" strokeWidth="1" opacity="0.3">
-                  <animate attributeName="r" values="8;12;8" dur="2s" repeatCount="indefinite" />
-                </circle>
-              </svg>
-            </div>
+        <div className="flex items-center mb-4">
+          <span 
+            className="text-7xl font-bold tracking-tight"
+            style={{ 
+              color: '#1A4440',
+              fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+              fontWeight: '700'
+            }}
+          >
+            PRI
+          </span>
+          
+          {/* Professional 'i' with medical cross */}
+          <div className="relative mx-1">
+            <svg width="14" height="18" viewBox="0 0 14 18" className="mt-2">
+              <rect x="5" y="2" width="4" height="14" fill="#2C5F5D" rx="1" />
+              <rect x="1" y="6" width="12" height="4" fill="#2C5F5D" rx="1" />
+            </svg>
           </div>
           
           <span 
-            className="text-7xl font-black tracking-tight ml-2"
+            className="text-7xl font-bold tracking-tight"
             style={{ 
-              background: 'linear-gradient(135deg, #00B4D8 0%, #00D4FF 50%, #00FF88 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
-              textShadow: '0 4px 20px rgba(0, 255, 136, 0.3)'
+              color: '#4A9B96',
+              fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+              fontWeight: '700'
             }}
           >
             Sm
           </span>
           
-          {/* Modern AI badge */}
-          <div className="ml-4 px-3 py-1 rounded-full bg-gradient-to-r from-blue-500 to-cyan-400 text-white text-sm font-bold">
-            AI
-          </div>
-          
           <span 
-            className="text-xl font-light ml-2 opacity-60"
+            className="text-2xl font-normal ml-3"
             style={{ 
-              color: '#001F3F',
-              fontFamily: '"Inter", system-ui, -apple-system, sans-serif'
+              color: '#1A4440',
+              fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+              fontSize: '1.5rem'
             }}
           >
             ™
           </span>
         </div>
         
-        {/* Enhanced subtitle with tech styling */}
-        <div className="relative">
+        {/* Professional subtitle */}
+        <div className="mb-4">
           <div 
-            className="text-2xl font-medium tracking-wide"
+            className="text-2xl font-semibold tracking-wide leading-tight"
             style={{ 
-              color: '#001F3F',
-              fontFamily: '"Inter", system-ui, -apple-system, sans-serif',
-              letterSpacing: '0.08em'
+              color: '#1A4440',
+              fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+              letterSpacing: '0.05em',
+              fontWeight: '600'
             }}
           >
             Predictive Readmission Intelligence System
           </div>
           
-          {/* Subtle underline accent */}
-          <div className="mt-2 h-1 w-32 bg-gradient-to-r from-cyan-400 via-blue-500 to-transparent rounded-full opacity-60"></div>
-          
-          {/* Tech keywords */}
-          <div className="flex gap-3 mt-3">
-            <span className="px-2 py-1 text-xs bg-cyan-100 text-cyan-800 rounded-full font-medium">
-              Machine Learning
+          {/* Professional accent line */}
+          <div className="mt-3 h-0.5 w-40 bg-gradient-to-r from-teal-600 to-transparent"></div>
+        </div>
+        
+        {/* Professional capability indicators */}
+        <div className="flex gap-4 text-sm">
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-teal-600 rounded-full mr-2"></div>
+            <span 
+              style={{ 
+                color: '#2C5F5D',
+                fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+                fontWeight: '500'
+              }}
+            >
+              Clinical Decision Support
             </span>
-            <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full font-medium">
-              Healthcare AI
+          </div>
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-teal-500 rounded-full mr-2"></div>
+            <span 
+              style={{ 
+                color: '#2C5F5D',
+                fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+                fontWeight: '500'
+              }}
+            >
+              Risk Assessment
             </span>
-            <span className="px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded-full font-medium">
-              Predictive Analytics
+          </div>
+          <div className="flex items-center">
+            <div className="w-2 h-2 bg-teal-400 rounded-full mr-2"></div>
+            <span 
+              style={{ 
+                color: '#2C5F5D',
+                fontFamily: '"Segoe UI", system-ui, -apple-system, sans-serif',
+                fontWeight: '500'
+              }}
+            >
+              Patient Analytics
             </span>
           </div>
         </div>
@@ -230,4 +188,4 @@ const Logo: React.FC<{ width?: number; height?: number; className?: string }> = 
   );
 };
 
-export default Logo;
+export default ProfessionalPrismLogo;
